@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetDecision — Partidos (Sprint 1)</title>
+  <style>
+    /* Sprint 1 — estilos mínimos funcionales, UI final en Sprint 3-4 */
+    body { font-family: Arial, sans-serif; background: #0a0c0f; color: #e8eaf0; margin: 0; padding: 20px; }
+    h1   { color: #f0c040; }
+    .partido { background: #111418; border: 1px solid #2a2f3a; border-radius: 8px; padding: 16px; margin: 10px 0; }
+    .positivo  { border-left: 4px solid #00e676; }
+    .negativo  { border-left: 4px solid #ff3d57; }
+    .equipos   { font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; }
+    .momios    { font-size: 0.85rem; color: #8892a4; margin-bottom: 6px; }
+    .rec       { font-size: 0.9rem; }
+    .ev-pos    { color: #00e676; }
+    .ev-neg    { color: #ff3d57; }
+    #cargando  { color: #f0c040; padding: 20px; }
+    #stats     { margin-bottom: 20px; color: #8892a4; }
+    #btn-ir    { background: #f0c040; color: #0a0c0f; border: none; padding: 10px 24px;
+                 border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 16px; }
+  </style>
+</head>
+<body>
+
+  <h1>🎯 BetDecision — Jornada 15</h1>
+  <p style="color:#8892a4">Liga MX · Clausura 2026 · Sprint 1 — UI provisional</p>
+
+  <div id="stats">Cargando partidos...</div>
+  <div id="lista"><p id="cargando">⏳ Consultando regresión lineal...</p></div>
+
+  <button id="btn-ir" onclick="alert('Pantalla 2 disponible en Sprint 2')" style="display:none">
+    ⚡ Ir a Optimizar Capital →
+  </button>
+
+  <script>
+    const API = 'http://localhost:8000';
+
+    async function cargarPartidos() {
+      try {
+        const res  = await fetch(API + '/partidos');
+        const data = await res.json();
+
+        if (!data.ok) { document.getElementById('lista').innerHTML = '<p>Error al cargar.</p>'; return; }
+
+        const partidos  = data.partidos;
+        const positivos = partidos.filter(p => p.ev_positivo).length;
+
+        document.getElementById('stats').innerHTML =
+          `<strong style="color:#f0c040">${partidos.length}</strong> partidos · ` +
+          `<strong style="color:#00e676">${positivos}</strong> con EV positivo`;
+
+        let html = '';
+        partidos.forEach((p, i) => {
+          const m   = p.momios;
+          const r   = p.recomendado;
+          const cls = p.ev_positivo ? 'positivo' : 'negativo';
+          const evCls = p.ev_positivo ? 'ev-pos' : 'ev-neg';
+          const badge = p.ev_positivo ? '✓ EV+' : '✗ EV−';
+
+          html += `
+            <div class="partido ${cls}">
+              <div class="equipos">#${i+1} ${p.local} <span style="color:#8892a4">vs</span> ${p.visitante}</div>
+              <div class="momios">
+                Local: ${m.local.momio} (${m.local.prob}%) &nbsp;|&nbsp;
+                Empate: ${m.empate.momio} (${m.empate.prob}%) &nbsp;|&nbsp;
+                Visitante: ${m.visitante.momio} (${m.visitante.prob}%)
+              </div>
+              <div class="rec">
+                Recomendado: <strong>${r.resultado}</strong> · Momio ${r.momio} ·
+                EV <span class="${evCls}">${r.ev >= 0 ? '+' : ''}${r.ev}</span>
+                &nbsp;<strong class="${evCls}">${badge}</strong>
+              </div>
+            </div>`;
+        });
+
+        document.getElementById('lista').innerHTML = html;
+        document.getElementById('btn-ir').style.display = 'inline-block';
+
+      } catch (e) {
+        document.getElementById('lista').innerHTML =
+          '<p style="color:#ff3d57">⚠ Error de conexión. ¿Está corriendo uvicorn?</p>';
+      }
+    }
+
+    cargarPartidos();
+  </script>
+</body>
+</html>
