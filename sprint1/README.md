@@ -140,16 +140,6 @@ python database.py
 
 ---
 
-## Cambios en main.py respecto a la versión anterior
-
-| Problema | Solución aplicada |
-|----------|-------------------|
-| `on_event("startup")` deprecado en FastAPI moderno | Reemplazado por patrón `lifespan` con `@asynccontextmanager` |
-| `RuntimeError` si la carpeta `frontend/static/` no existe | Guard `if os.path.isdir(STATIC_DIR)` — el servidor arranca de todas formas e imprime un aviso |
-| `os.path.dirname(__file__)` devuelve cadena vacía al ejecutar desde el mismo directorio en Windows | Cambiado a `os.path.abspath(__file__)` para resolver siempre la ruta absoluta correcta |
-
----
-
 ## Historias de usuario completadas
 
 - **H1 completa** — Login y registro de usuario con MySQL
@@ -173,4 +163,3 @@ python database.py
 | Diana Sarahí Vázquez Medina | 220419954 | Product Owner |
 | Luis Eduardo Huitrado Márquez | 218552949 | Scrum Master |
 
-Repositorio: https://github.com/JustNoel05/CompuPapus
