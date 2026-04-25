@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+  <title>BetDecision — Optimizar</title>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow-tl"></div>
+  <div class="bg-glow-br"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-brand">🎯 BET<span>DECISION</span></div>
+    <div class="navbar-tabs">
+      <button class="nav-tab" onclick="location.href='/partidos-page'">Partidos</button>
+      <button class="nav-tab active" onclick="location.href='/optimizar-page'">Optimizar</button>
+      <button class="nav-tab" onclick="location.href='/historial-page'">Historial</button>
+    </div>
+    <div class="navbar-user">
+      Hola, <strong id="navbar-username">Usuario</strong>
+      <button class="btn-logout" onclick="handleLogout()">SALIR</button>
+    </div>
+  </nav>
+
+  <div class="screen active">
+    <div class="container">
+
+      <div class="page-title">Distribución Óptima</div>
+      <div class="page-subtitle">
+        Ingresa tu capital y el sistema calculará la mejor combinación
+      </div>
+
+      <!-- ── FORMULARIO DE CAPITAL ──────────────────────────────────────── -->
+      <div class="capital-form-card">
+        <p class="section-label">Capital disponible</p>
+        <div class="capital-form-row">
+          <div class="capital-input-wrap">
+            <span class="capital-prefix">$</span>
+            <input type="number" class="form-input capital-input" id="capital-input" placeholder="500" min="100"
+              max="100000" value="500" />
+          </div>
+          <button class="btn btn-primary" id="btn-calcular" onclick="calcularOptimo()">
+            CALCULAR
+          </button>
+        </div>
+
+        <!-- Selector de algoritmo — solo informativo, el sistema siempre usa PD -->
+        <div style="margin-top:1.25rem;">
+          <p class="section-label">Algoritmo utilizado</p>
+          <div class="algo-selector">
+            <button class="algo-btn active" id="algo-pd" onclick="selectAlgo('pd')">
+              Prog. Dinámica — O(n×C)
+            </button>
+            <button class="algo-btn" id="algo-bf" onclick="selectAlgo('bf')">
+              Fuerza Bruta — O(2ⁿ)
+            </button>
+          </div>
+          <p style="font-size:.75rem;color:var(--text-dim);margin-top:.5rem;">
+            Selecciona un algoritmo para comparar tiempos de ejecución y complejidad.
+            Programación Dinámica garantiza el óptimo con mayor eficiencia.
+          </p>
+        </div>
+      </div>
+
+      <!-- ── MÉTRICAS DEL ALGORITMO (aparecen tras calcular) ───────────── -->
+      <div class="algo-metrics" id="algo-metrics" style="display:none;">
+        <div class="metric-item">
+          <div class="metric-val" id="metric-ops">—</div>
+          <div class="metric-lbl">Complejidad</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val" id="metric-time">—</div>
+          <div class="metric-lbl">Tiempo (ms)</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val" id="metric-opt">—</div>
+          <div class="metric-lbl">Garantía</div>
+        </div>
+      </div>
+
+      <!-- ── APUESTAS RECOMENDADAS (aparecen tras calcular) ────────────── -->
+      <div id="results-section" style="display:none;">
+        <p class="section-label">Apuestas recomendadas</p>
+        <div class="results-grid" id="results-list"></div>
+        <div class="summary-bar" id="summary-bar"></div>
+      </div>
+
+      <!-- ── DISCLAIMERS ────────────────────────────────────────────────── -->
+      <div class="disclaimer-box" style="margin-top:2rem;margin-bottom:1rem;
+               background:rgba(0,212,255,.04);border-color:rgba(0,212,255,.2);">
+        <strong style="color:var(--cyan)">💡 Nota sobre momios:</strong>
+        Los momios mostrados son <strong>calculados objetivamente</strong>
+        por el sistema mediante regresión lineal. Los momios reales de tu
+        casa de apuestas pueden variar. Compara antes de apostar.
+      </div>
+
+      <div class="disclaimer-box">
+        <strong>⚠ Advertencia:</strong> Las recomendaciones de este sistema
+        se basan en un modelo de regresión lineal aplicado sobre datos
+        históricos de los últimos 10 partidos de cada equipo. Las
+        probabilidades calculadas son estimaciones estadísticas y
+        <strong>no garantizan resultados reales</strong>. El fútbol es
+        impredecible por naturaleza — apuesta siempre de forma responsable
+        y dentro de tus posibilidades. Proyecto académico IL355 · Análisis
+        de Algoritmos · UDG CUCEI 2026.
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

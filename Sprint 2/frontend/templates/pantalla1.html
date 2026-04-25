@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+  <title>BetDecision — Partidos</title>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow-tl"></div>
+  <div class="bg-glow-br"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-brand">🎯 BET<span>DECISION</span></div>
+    <div class="navbar-tabs">
+      <button class="nav-tab active" onclick="location.href='/partidos-page'">Partidos</button>
+      <button class="nav-tab" onclick="location.href='/optimizar-page'">Optimizar</button>
+      <button class="nav-tab" onclick="location.href='/historial-page'">Historial</button>
+    </div>
+    <div class="navbar-user">
+      Hola, <strong id="navbar-username">Usuario</strong>
+      <button class="btn-logout" onclick="handleLogout()">SALIR</button>
+    </div>
+  </nav>
+
+  <div class="screen active">
+    <div class="container">
+
+      <!-- Encabezado de jornada -->
+      <div class="jornada-header">
+        <div>
+          <div class="page-title">Jornada 15</div>
+          <div class="page-subtitle">
+            Liga MX · Clausura 2026 · Momios calculados por regresión lineal
+          </div>
+        </div>
+        <div class="jornada-badge">🗓 Temporada 2026-A</div>
+      </div>
+
+      <!-- Estadísticas rápidas -->
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="val" style="color:var(--gold)" id="stat-total">—</div>
+          <div class="lbl">Partidos Jornada</div>
+        </div>
+        <div class="stat-box">
+          <div class="val" style="color:var(--green)" id="stat-positivos">—</div>
+          <div class="lbl">Con EV Positivo</div>
+        </div>
+        <!-- <div class="stat-box">
+          <div class="val" style="color:var(--cyan)" id="stat-negativos">—</div>
+          <div class="lbl">Con EV Negativo</div>
+        </div> -->
+        <!-- Nota: agregar estadística de EV Negativo de la jornada -->
+
+      </div>
+
+      <p class="section-label">Partidos ordenados por ganancia proyectada</p>
+
+      <!-- Lista de partidos — se rellena desde script.js -->
+      <div class="match-list" id="match-list">
+        <div class="empty-state">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- Botón ir a Pantalla 2 -->
+      <div style="margin-top:2rem;text-align:center;">
+        <button class="btn btn-primary" onclick="location.href='/optimizar-page'">
+          ⚡ Calcular Distribución Óptima
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

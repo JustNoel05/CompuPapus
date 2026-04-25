@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+  <title>BetDecision — Login</title>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow-tl"></div>
+  <div class="bg-glow-br"></div>
+  <div class="toast" id="toast"></div>
+
+  <div class="screen active" id="screen-login">
+    <div class="login-wrapper">
+      <div class="login-logo">
+        <div class="login-logo-title">🎯 BET<span>DECISION</span></div>
+        <div class="login-logo-sub">Liga MX · Análisis de Algoritmos — UDG</div>
+      </div>
+      <div class="login-card">
+        <div class="tab-switcher">
+          <button class="tab-btn active" id="btn-tab-login" onclick="switchLoginTab('login')">Iniciar Sesión</button>
+          <button class="tab-btn" id="btn-tab-register" onclick="switchLoginTab('register')">Registrarse</button>
+        </div>
+
+        <!-- LOGIN -->
+        <div class="login-form active" id="form-login">
+          <div class="form-group">
+            <label class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-input" id="login-email" placeholder="tu@correo.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contraseña</label>
+            <input type="password" class="form-input" id="login-pass" placeholder="••••••••" />
+          </div>
+          <button class="btn btn-primary btn-full" id="btn-login" onclick="handleLogin()">
+            ENTRAR AL SISTEMA
+          </button>
+        </div>
+
+        <!-- REGISTER -->
+        <div class="login-form" id="form-register">
+          <div class="form-group">
+            <label class="form-label">Nombre Completo</label>
+            <input type="text" class="form-input" id="reg-name" placeholder="Tu nombre" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-input" id="reg-email" placeholder="tu@correo.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contraseña</label>
+            <input type="password" class="form-input" id="reg-pass" placeholder="Mínimo 6 caracteres" />
+          </div>
+          <button class="btn btn-primary btn-full" id="btn-register" onclick="handleRegister()">
+            CREAR CUENTA
+          </button>
+        </div>
+
+        <div class="login-disclaimer">
+          <strong>⚠ Aviso:</strong> Proyecto académico IL355 — UDG. Las recomendaciones son modelos estadísticos y no
+          garantizan ganancias.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>
