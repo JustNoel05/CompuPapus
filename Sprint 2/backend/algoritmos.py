@@ -1,6 +1,6 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # algoritmos.py — CompuPapus / BetDecision
-# Implementación de los 3 algoritmos Knapsack 0/1
+# Implementación de 2/3 algoritmos Knapsack 0/1
 # Entrada: lista de partidos con EV positivo + capital del usuario
 # Salida:  distribución óptima del capital entre los partidos seleccionados
 # ─────────────────────────────────────────────────────────────────────────────
