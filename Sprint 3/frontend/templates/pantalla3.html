@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+  <title>BetDecision — Historial</title>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow-tl"></div>
+  <div class="bg-glow-br"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-brand">🎯 BET<span>DECISION</span></div>
+    <div class="navbar-tabs">
+      <button class="nav-tab" id="tab-1" onclick="location.href='/partidos-page'">Partidos</button>
+      <button class="nav-tab" id="tab-2" onclick="location.href='/optimizar-page'">Optimizar</button>
+      <button class="nav-tab active" id="tab-3" onclick="location.href='/historial-page'">Historial</button>
+    </div>
+    <div class="navbar-user">
+      Hola, <strong id="navbar-username">Usuario</strong>
+      <button class="btn-logout" onclick="handleLogout()">SALIR</button>
+    </div>
+  </nav>
+
+  <div class="screen active" id="screen-3">
+    <div class="container">
+      <div class="page-title">Mi Historial</div>
+      <div class="page-subtitle">Seguimiento de tus recomendaciones anteriores</div>
+
+      <div class="accuracy-hero" id="accuracy-hero">
+        <div class="accuracy-ring">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#1a2030" stroke-width="10" />
+            <circle cx="50" cy="50" r="42" fill="none" stroke="var(--green)" stroke-width="10" stroke-dasharray="263.89"
+              stroke-dashoffset="263.89" stroke-linecap="round" id="accuracy-circle" />
+          </svg>
+          <div class="accuracy-ring-val">
+            <span class="pct" id="acc-pct">0%</span>
+            <span class="pct-lbl">Aciertos</span>
+          </div>
+        </div>
+        <div class="accuracy-stats">
+          <div class="acc-stat">
+            <div class="val" style="color:var(--gold)" id="acc-total">0</div>
+            <div class="lbl">Recomendaciones</div>
+          </div>
+          <div class="acc-stat">
+            <div class="val" style="color:var(--green)" id="acc-hits">0</div>
+            <div class="lbl">Acertadas</div>
+          </div>
+          <div class="acc-stat">
+            <div class="val" style="color:var(--red)" id="acc-miss">0</div>
+            <div class="lbl">Fallidas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-filters">
+        <button class="filter-btn active" onclick="filterHistory('all',     this)">Todas</button>
+        <button class="filter-btn" onclick="filterHistory('hit',     this)">✅ Acertadas</button>
+        <button class="filter-btn" onclick="filterHistory('miss',    this)">❌ Fallidas</button>
+        <button class="filter-btn" onclick="filterHistory('pending', this)">⏳ Pendientes</button>
+      </div>
+
+      <div class="history-list" id="history-list">
+        <div class="empty-state">
+          <div class="icon">📋</div>
+          <p>Cargando historial...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

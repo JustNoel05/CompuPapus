@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+  <title>BetDecision — Partidos</title>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow-tl"></div>
+  <div class="bg-glow-br"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-brand">🎯 BET<span>DECISION</span></div>
+    <div class="navbar-tabs">
+      <button class="nav-tab active" id="tab-1" onclick="location.href='/partidos-page'">Partidos</button>
+      <button class="nav-tab" id="tab-2" onclick="location.href='/optimizar-page'">Optimizar</button>
+      <button class="nav-tab" id="tab-3" onclick="location.href='/historial-page'">Historial</button>
+    </div>
+    <div class="navbar-user">
+      Hola, <strong id="navbar-username">Usuario</strong>
+      <button class="btn-logout" onclick="handleLogout()">SALIR</button>
+    </div>
+  </nav>
+
+  <div class="screen active" id="screen-1">
+    <div class="container">
+      <div class="jornada-header">
+        <div>
+          <div class="page-title">Jornada 15</div>
+          <div class="page-subtitle">Liga MX · Clausura 2026 · Momios calculados por regresión lineal</div>
+        </div>
+        <div class="jornada-badge">🗓 Temporada 2026-A</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="val" style="color:var(--gold)" id="stat-total">—</div>
+          <div class="lbl">Partidos Jornada</div>
+        </div>
+        <div class="stat-box">
+          <div class="val" style="color:var(--green)" id="stat-positivos">—</div>
+          <div class="lbl">Con EV Positivo</div>
+        </div>
+        <!-- <div class="stat-box">
+          <div class="val" style="color:var(--cyan)">100%</div>
+          <div class="lbl">Prob. Sin Sesgo</div>
+        </div> -->
+      </div>
+      <p class="section-label">Partidos ordenados por ganancia proyectada</p>
+      <div class="match-list" id="match-list">
+        <div class="empty-state">
+          <div class="spinner"></div>
+        </div>
+      </div>
+      <div style="margin-top:2rem; text-align:center;">
+        <button class="btn btn-primary" onclick="location.href='/optimizar-page'">⚡ Calcular Distribución
+          Óptima</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>
