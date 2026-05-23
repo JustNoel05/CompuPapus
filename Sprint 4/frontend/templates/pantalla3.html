@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+  <title>BetDecision — Historial</title>
+</head>
+
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow-tl"></div>
+  <div class="bg-glow-br"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-brand">🎯 BET<span>DECISION</span></div>
+    <div class="navbar-tabs">
+      <button class="nav-tab" id="tab-1" onclick="location.href='/partidos-page'">Partidos</button>
+      <button class="nav-tab" id="tab-2" onclick="location.href='/optimizar-page'">Optimizar</button>
+      <button class="nav-tab active" id="tab-3" onclick="location.href='/historial-page'">Historial</button>
+    </div>
+    <div class="navbar-user">
+      Hola, <strong id="navbar-username">Usuario</strong>
+      <button class="btn-logout" onclick="handleLogout()">SALIR</button>
+    </div>
+  </nav>
+
+  <div class="screen active" id="screen-3">
+    <div class="container">
+      <div class="page-title">Mi Historial</div>
+      <div class="page-subtitle">Seguimiento de tus recomendaciones anteriores</div>
+
+      <div class="accuracy-hero" id="accuracy-hero">
+        <div class="accuracy-ring">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#1a2030" stroke-width="10" />
+            <circle cx="50" cy="50" r="42" fill="none" stroke="var(--green)" stroke-width="10" stroke-dasharray="263.89"
+              stroke-dashoffset="263.89" stroke-linecap="round" id="accuracy-circle" />
+          </svg>
+          <div class="accuracy-ring-val">
+            <span class="pct" id="acc-pct">0%</span>
+            <span class="pct-lbl">Aciertos</span>
+          </div>
+        </div>
+        <div class="accuracy-stats">
+          <div class="acc-stat">
+            <div class="val" style="color:var(--gold)" id="acc-total">0</div>
+            <div class="lbl">Recomendaciones</div>
+          </div>
+          <div class="acc-stat">
+            <div class="val" style="color:var(--green)" id="acc-hits">0</div>
+            <div class="lbl">Acertadas</div>
+          </div>
+          <div class="acc-stat">
+            <div class="val" style="color:var(--red)" id="acc-miss">0</div>
+            <div class="lbl">Fallidas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-filters">
+        <button class="filter-btn active" onclick="filterHistory('all',     this)">Todas</button>
+        <button class="filter-btn" onclick="filterHistory('hit',     this)">✅ Acertadas</button>
+        <button class="filter-btn" onclick="filterHistory('miss',    this)">❌ Fallidas</button>
+        <button class="filter-btn" onclick="filterHistory('pending', this)">⏳ Pendientes</button>
+      </div>
+
+      <!-- DESCARGA HUFFMAN -->
+      <div style="margin-bottom:1.25rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+        <button class="btn btn-ghost" id="btn-descargar" onclick="descargarHistorial()"
+          style="border-color:rgba(0,212,255,.35);color:var(--cyan);gap:.5rem;">
+          ⬇ Descargar Reporte
+        </button>
+        <span style="font-size:.75rem;color:var(--text-dim);">
+          Comprimido con <strong style="color:var(--cyan)">Huffman O(n log n)</strong>
+        </span>
+      </div>
+
+      <div class="history-list" id="history-list">
+        <div class="empty-state">
+          <div class="icon">📋</div>
+          <p>Cargando historial...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- MEGATRON WIDGET (esquina inferior derecha)    -->
+  <!-- ============================================= -->
+  <div id="megatron-widget" class="megatron-widget">
+    <div class="megatron-avatar">
+      <img src="/static/imagenes/megatron.png" alt="Megatron">
+    </div>
+    <div id="megatron-bubble" class="megatron-bubble hidden">
+      <div class="bubble-text" id="megatron-message"></div>
+      <div class="bubble-actions" id="megatron-actions" style="display: none;">
+        <button id="btn-show-profile" class="btn-profile-link">🎯 Ver mi Perfil</button>
+      </div>
+    </div>
+    <div id="megatron-balloon" class="megatron-balloon-counter" style="display: none;">
+      ⚽ <span id="megatron-ball-count">0</span>
+    </div>
+  </div>
+
+  <!-- ============================================= -->
+  <!-- MODAL PARA MOSTRAR TARJETA DE PERFIL          -->
+  <!-- ============================================= -->
+  <div id="profile-modal" class="profile-modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>🎖️ Perfil de Apostador</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <img id="profile-card-img" src="" alt="Tarjeta de perfil" class="profile-card-img">
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+  <script>
+    // Descarga el reporte de historial comprimido con Huffman
+    async function descargarHistorial() {
+      var user = JSON.parse(sessionStorage.getItem('BetDesicion_user') || 'null');
+      if (!user) { showToast('Debes iniciar sesión', 'error'); return; }
+
+      var btn = document.getElementById('btn-descargar');
+      btn.innerHTML = '<span class="spinner"></span> Generando...';
+      btn.disabled = true;
+
+      try {
+        var resp = await fetch('http://localhost:8000/descargar-historial/' + user.id);
+
+        if (!resp.ok) {
+          var err = await resp.json();
+          showToast(err.detail || 'Error al generar reporte', 'error');
+          return;
+        }
+
+        var blob = await resp.blob();
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'betdecision_historial.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast('✅ Reporte descargado con Huffman', 'success');
+      } catch (e) {
+        showToast('Error de conexión con el servidor', 'error');
+      } finally {
+        btn.innerHTML = '⬇ Descargar Reporte';
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+
+</html>
